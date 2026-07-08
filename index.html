@@ -3,160 +3,378 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RYUVITA — The Living Ecosystem</title>
+<title>SATORIA RYUVITA — Nature, Unlocked</title>
+<meta name="description" content="Satoria Ryuvita transforms tapioca into advanced functional nutrition through science — resistant dextrin, functional starches, syrups and soluble fibre, engineered with precision.">
+<meta property="og:title" content="SATORIA RYUVITA — Nature, Unlocked">
+<meta property="og:description" content="From root to refined. We transform nature into advanced functional nutrition through science.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://d8j0ntlcm91z4.cloudfront.net/user_3GDFh7NOGPh6eySOHJHy3Cr5j27/hf_20260708_152313_d238a2cc-1202-4be5-b8f7-992f7eb96499.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Cpath d='M 218.46 102.50 A 100 100 0 1 1 137.51 21.55 L 218.46 102.50 Z' fill='%231c1913'/%3E%3Ccircle cx='120' cy='120' r='14' fill='%23f8f5ef'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
   :root{
-    --emerald:#0b241a;
-    --emerald-deep:#040d09;
-    --ivory:#f4ecdd;
-    --ivory-dim:rgba(244,236,221,.55);
-    --gold:#c9a86a;
-    --gold-soft:rgba(201,168,106,.35);
-    --glass:rgba(12,28,21,.55);
+    --paper:#f8f5ef;
+    --paper2:#f3eee4;
+    --ink:#1c1913;
+    --ink-soft:rgba(28,25,19,.62);
+    --ink-faint:rgba(28,25,19,.36);
+    --gold:#b8935a;
+    --gold-soft:rgba(184,147,90,.32);
+    --emerald:#14563e;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%;overflow:hidden;background:#020604;font-family:'Inter',system-ui,sans-serif;color:var(--ivory)}
+  html{scroll-behavior:auto}
+  body{background:var(--paper);color:var(--ink);font-family:'Inter',system-ui,sans-serif}
   ::selection{background:var(--gold-soft)}
 
-  /* ---------- layers ---------- */
-  #stage{position:fixed;inset:0}
+  /* ---------- intro layers ---------- */
+  #introSpace{height:380vh}
+  #film{position:fixed;inset:0;z-index:1;width:100%;height:100%;display:block}
+  #stage{position:fixed;inset:0;z-index:2;pointer-events:none}
   canvas#gl{position:absolute;inset:0;display:block}
-  .film{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#020604;opacity:0;transition:none;pointer-events:none}
-  #veil{position:fixed;inset:0;background:#020604;z-index:60;transition:opacity 1.4s ease;pointer-events:none}
+  #type{position:fixed;inset:0;z-index:3;pointer-events:none}
 
-  /* ---------- loader ---------- */
-  #loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:70;background:#020604;transition:opacity 1.2s ease}
-  #loader .dot{width:6px;height:6px;border-radius:50%;background:var(--ivory);
-    box-shadow:0 0 24px 6px rgba(230,214,180,.55);animation:breathe 2.6s ease-in-out infinite}
-  @keyframes breathe{0%,100%{transform:scale(1);opacity:.55}50%{transform:scale(1.9);opacity:1}}
+  #veil{position:fixed;inset:0;background:var(--paper);z-index:90;transition:opacity 1.4s ease;pointer-events:none;
+    display:flex;align-items:center;justify-content:center}
+  #veil span{font:100 22px/1 'Inter',sans-serif;letter-spacing:.6em;text-indent:.6em;color:var(--ink-faint);
+    animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.35}50%{opacity:.9}}
 
-  /* ---------- skip ---------- */
-  #skip{position:fixed;right:34px;bottom:30px;z-index:55;background:none;border:1px solid rgba(244,236,221,.18);
-    color:var(--ivory-dim);font:300 11px/1 'Inter',sans-serif;letter-spacing:.22em;text-transform:uppercase;
-    padding:12px 20px;border-radius:30px;cursor:pointer;opacity:0;transition:opacity 1s ease,border-color .3s,color .3s;backdrop-filter:blur(6px)}
-  #skip:hover{border-color:var(--gold);color:var(--ivory)}
+  #skip{position:fixed;right:34px;bottom:30px;z-index:60;background:none;border:none;
+    font:300 10px/1 'Inter',sans-serif;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-faint);
+    cursor:pointer;padding:10px;opacity:0;transition:opacity .8s ease,color .3s}
   #skip.show{opacity:1}
+  #skip:hover{color:var(--ink)}
 
-  /* ---------- logo ---------- */
-  #logoWrap{position:fixed;left:50%;top:44%;transform:translate(-50%,-50%);z-index:40;text-align:center;
-    opacity:0;filter:blur(14px);pointer-events:none;transition:opacity 2.4s ease,filter 2.4s ease}
-  #logoWrap.reveal{opacity:1;filter:blur(0)}
-  #logoWrap.dock{transition:all 1.6s cubic-bezier(.7,0,.2,1);left:52px;top:34px;transform:translate(0,0) scale(.42);transform-origin:left top}
-  #logoImg{display:none;max-height:110px;max-width:340px}
-  #wordmark{font:200 46px/1 'Inter',sans-serif;letter-spacing:.52em;text-indent:.52em;color:var(--ivory)}
-  #wordtag{margin-top:16px;font:italic 300 15px/1.5 'Cormorant Garamond',serif;letter-spacing:.14em;color:var(--gold);
-    opacity:0;transition:opacity 2s ease .8s}
-  #logoWrap.reveal #wordtag{opacity:.9}
-  #logoWrap.dock #wordtag{opacity:0;transition:opacity .4s ease}
+  /* mobile: hold to transform */
+  #hold{position:fixed;left:50%;bottom:44px;transform:translateX(-50%);z-index:65;display:none;
+    flex-direction:column;align-items:center;gap:14px;border:none;background:none;
+    -webkit-user-select:none;user-select:none;touch-action:none;-webkit-tap-highlight-color:transparent;
+    transition:opacity .8s ease}
+  #hold .ring{width:74px;height:74px;border-radius:50%;position:relative;
+    background:conic-gradient(var(--gold) calc(var(--prog,0)*360deg),rgba(28,25,19,.14) 0);
+    display:flex;align-items:center;justify-content:center}
+  #hold .ring::after{content:'';position:absolute;inset:3px;border-radius:50%;background:rgba(248,245,239,.82);backdrop-filter:blur(6px)}
+  #hold .dot{width:22px;height:22px;border-radius:50%;background:var(--ink);position:relative;z-index:1;transition:transform .25s ease}
+  #hold.holding .dot{transform:scale(1.35)}
+  #hold .l{font:300 9px/1 'Inter',sans-serif;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-faint)}
+  #scrollHint{position:fixed;left:50%;bottom:34px;transform:translateX(-50%);z-index:55;text-align:center;
+    font:300 9px/1 'Inter',sans-serif;letter-spacing:.42em;text-transform:uppercase;color:var(--ink-faint);
+    opacity:0;transition:opacity 1.2s ease;pointer-events:none}
+  #scrollHint.show{opacity:1}
+  #scrollHint .line{width:1px;height:40px;margin:12px auto 0;background:linear-gradient(to bottom,var(--gold),transparent);
+    animation:fall 2.4s ease-in-out infinite}
+  @keyframes fall{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  .whisper{position:fixed;left:50%;top:12vh;transform:translateX(-50%);z-index:50;
+    font:italic 300 15px/1 'Cormorant Garamond',serif;letter-spacing:.22em;color:var(--ink-faint);
+    opacity:0;transition:opacity 1s ease;pointer-events:none;white-space:nowrap}
+  .whisper.on{opacity:1}
 
   /* ---------- nav ---------- */
-  #nav{position:fixed;top:38px;right:52px;z-index:45;display:flex;gap:38px;opacity:0;transition:opacity 1.8s ease}
-  #nav.show{opacity:1}
-  #nav a{color:var(--ivory-dim);text-decoration:none;font:300 11px/1 'Inter',sans-serif;letter-spacing:.24em;text-transform:uppercase;transition:color .3s}
-  #nav a:hover{color:var(--ivory)}
+  #nav{position:fixed;top:0;left:0;right:0;z-index:70;display:flex;justify-content:space-between;align-items:center;
+    padding:28px 50px;opacity:0;transform:translateY(-8px);transition:opacity 1.2s ease,transform 1.2s ease;pointer-events:none}
+  #nav.show{opacity:1;transform:none;pointer-events:auto}
+  #brand{font:200 14px/1 'Inter',sans-serif;letter-spacing:.5em;color:var(--ink)}
+  #brand b{font-weight:400}
+  #navLinks{display:flex;gap:34px}
+  #navLinks a{font:300 10px/1 'Inter',sans-serif;letter-spacing:.26em;text-transform:uppercase;text-decoration:none;
+    color:var(--ink);opacity:.5;transition:opacity .3s}
+  #navLinks a:hover{opacity:1}
 
-  /* ---------- hint ---------- */
-  #hint{position:fixed;left:50%;bottom:118px;transform:translateX(-50%);z-index:45;
-    font:300 11px/1 'Inter',sans-serif;letter-spacing:.3em;text-transform:uppercase;color:var(--ivory-dim);
-    opacity:0;transition:opacity 1.5s ease;pointer-events:none}
-  #hint.show{opacity:.8}
+  /* ---------- hero ---------- */
+  #hero{position:relative;z-index:10;height:100vh;display:flex;flex-direction:column;justify-content:center;
+    padding:0 8vw;pointer-events:none}
+  /* soft light scrim so the headline always sits legibly inside the living world */
+  #hero::before{content:'';position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(95deg,rgba(248,245,239,.62) 0%,rgba(248,245,239,.30) 46%,rgba(248,245,239,0) 72%)}
+  #hero>*{pointer-events:auto;position:relative}
+  #hero .kicker{font:300 10px/1 'Inter',sans-serif;letter-spacing:.5em;color:var(--gold);margin-bottom:28px;
+    opacity:0;transform:translateY(18px);transition:opacity 1.1s ease .1s,transform 1.1s cubic-bezier(.16,.6,.2,1) .1s}
+  #hero h1{font:100 clamp(46px,7.4vw,112px)/1.02 'Inter',sans-serif;letter-spacing:-.015em;max-width:11ch;
+    opacity:0;transition:opacity .8s ease}
+  #hero h1.ready{opacity:1}
+  #hero .lede{margin-top:28px;font:italic 300 clamp(16px,1.5vw,21px)/1.7 'Cormorant Garamond',serif;color:var(--ink-soft);
+    max-width:44ch;opacity:0;transform:translateY(22px);transition:opacity 1.2s ease .45s,transform 1.2s cubic-bezier(.16,.6,.2,1) .45s}
+  #hero .actions{margin-top:40px;display:flex;gap:16px;flex-wrap:wrap;
+    opacity:0;transform:translateY(18px);transition:opacity 1.2s ease .65s,transform 1.2s cubic-bezier(.16,.6,.2,1) .65s}
+  #hero.on .kicker,#hero.on .lede,#hero.on .actions{opacity:1;transform:none}
 
-  /* ---------- tooltip ---------- */
-  #tip{position:fixed;z-index:48;pointer-events:none;opacity:0;transition:opacity .35s ease;
-    font:300 12px/1 'Inter',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--ivory);
-    padding:10px 16px;border:1px solid rgba(201,168,106,.35);border-radius:24px;background:var(--glass);backdrop-filter:blur(10px)}
+  .cta{display:inline-flex;align-items:center;font:400 11px/1 'Inter',sans-serif;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--paper);background:var(--ink);border:none;padding:19px 32px;border-radius:40px;cursor:pointer;text-decoration:none;
+    transition:background .35s ease,transform .35s ease}
+  .cta:hover{background:var(--emerald);transform:translateY(-2px)}
+  .cta.ghost{background:none;color:var(--ink);border:1px solid rgba(28,25,19,.25)}
+  .cta.ghost:hover{border-color:var(--gold);background:none;color:var(--ink)}
 
-  /* ---------- ingredient panel ---------- */
-  #panel{position:fixed;top:50%;right:56px;transform:translateY(-50%) translateX(30px);width:340px;z-index:50;
-    background:linear-gradient(160deg,rgba(14,32,24,.82),rgba(5,13,9,.86));backdrop-filter:blur(22px);
-    border:1px solid rgba(201,168,106,.22);border-radius:18px;padding:34px 32px 30px;
-    opacity:0;pointer-events:none;transition:opacity .7s ease,transform .7s cubic-bezier(.4,0,.2,1)}
-  #panel.show{opacity:1;pointer-events:auto;transform:translateY(-50%) translateX(0)}
-  #panel .kicker{font:300 10px/1 'Inter',sans-serif;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
-  #panel h2{font:300 24px/1.25 'Inter',sans-serif;letter-spacing:.04em;margin-bottom:6px}
-  #panel .latin{font:italic 300 14px/1.4 'Cormorant Garamond',serif;color:var(--ivory-dim);margin-bottom:20px}
-  #panel .sec{margin-bottom:18px}
-  #panel .sec h3{font:400 10px/1 'Inter',sans-serif;letter-spacing:.3em;text-transform:uppercase;color:var(--ivory-dim);margin-bottom:8px}
-  #panel .sec p{font:300 13px/1.7 'Inter',sans-serif;color:rgba(244,236,221,.82)}
-  #panel .apps{display:flex;flex-wrap:wrap;gap:6px}
-  #panel .apps span{font:300 11px/1 'Inter',sans-serif;letter-spacing:.06em;color:var(--ivory-dim);
-    border:1px solid rgba(244,236,221,.14);padding:6px 12px;border-radius:20px}
-  #panel .explore{margin-top:24px;display:inline-block;font:400 11px/1 'Inter',sans-serif;letter-spacing:.26em;text-transform:uppercase;
-    color:var(--emerald-deep);background:linear-gradient(120deg,#d8bc84,#c9a86a);padding:14px 26px;border-radius:30px;border:none;cursor:pointer;transition:filter .3s}
-  #panel .explore:hover{filter:brightness(1.1)}
-  #panel .close{position:absolute;top:18px;right:20px;background:none;border:none;color:var(--ivory-dim);font-size:16px;cursor:pointer;transition:color .3s}
-  #panel .close:hover{color:var(--ivory)}
+  /* ---------- site sections ---------- */
+  section.block{position:relative;z-index:10;background:var(--paper);padding:16vh 8vw}
+  section.block.alt{background:var(--paper2)}
+  .no{font:300 10px/1 'Inter',sans-serif;letter-spacing:.5em;color:var(--gold);margin-bottom:26px}
+  .block h2{font:200 clamp(30px,4vw,58px)/1.12 'Inter',sans-serif;letter-spacing:-.01em;max-width:18ch}
+  .block .lede{margin-top:26px;font:italic 300 clamp(16px,1.4vw,20px)/1.75 'Cormorant Garamond',serif;color:var(--ink-soft);max-width:52ch}
 
-  /* ---------- discovery ---------- */
-  #discover{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:46;text-align:center;max-width:min(1080px,94vw);
-    opacity:0;transition:opacity 1.8s ease .4s;pointer-events:none}
-  #discover.show{opacity:1;pointer-events:auto}
-  #discover .q{font:italic 300 17px/1 'Cormorant Garamond',serif;letter-spacing:.1em;color:var(--ivory-dim);margin-bottom:14px}
-  #chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
-  #chips button{font:300 11px/1 'Inter',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--ivory-dim);
-    background:rgba(10,24,17,.5);border:1px solid rgba(244,236,221,.13);padding:10px 18px;border-radius:24px;cursor:pointer;
-    backdrop-filter:blur(8px);transition:all .35s ease}
-  #chips button:hover{border-color:var(--gold-soft);color:var(--ivory)}
-  #chips button.active{background:linear-gradient(120deg,rgba(216,188,132,.92),rgba(201,168,106,.92));color:var(--emerald-deep);border-color:transparent}
-  #focusNote{margin-top:12px;font:300 11px/1.6 'Inter',sans-serif;letter-spacing:.12em;color:var(--gold);opacity:0;transition:opacity .8s ease;min-height:14px}
-  #focusNote.show{opacity:.95}
+  .rows{margin-top:56px;max-width:820px}
+  .row{display:flex;justify-content:space-between;align-items:baseline;gap:4vw;padding:26px 0;
+    border-bottom:1px solid rgba(28,25,19,.12);transition:padding .4s ease}
+  .row:first-child{border-top:1px solid rgba(28,25,19,.12)}
+  .row:hover{padding-left:14px}
+  .row .t{font:200 clamp(20px,2.2vw,30px)/1.2 'Inter',sans-serif}
+  .row .d{font:italic 300 14px/1.5 'Cormorant Garamond',serif;color:var(--ink-faint);text-align:right;max-width:34ch}
+
+  .stats{display:flex;gap:7vw;margin-top:56px;flex-wrap:wrap}
+  .stat .v{font:100 clamp(34px,3.4vw,52px)/1 'Inter',sans-serif}
+  .stat .l{margin-top:10px;font:300 10px/1.6 'Inter',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-faint)}
+
+  footer{position:relative;z-index:10;background:var(--ink);color:var(--paper);padding:14vh 8vw 8vh}
+  footer h2{font:100 clamp(38px,5.4vw,84px)/1.05 'Inter',sans-serif;letter-spacing:-.015em;max-width:13ch}
+  footer .cta{background:var(--paper);color:var(--ink);margin-top:40px}
+  footer .cta:hover{background:#fff}
+  .footLine{margin-top:10vh;display:flex;justify-content:space-between;gap:6vw;flex-wrap:wrap;
+    font:300 11px/2 'Inter',sans-serif;letter-spacing:.16em;color:rgba(248,245,239,.55)}
+  .footLine b{display:block;font:400 9px/2.6 'Inter',sans-serif;letter-spacing:.32em;text-transform:uppercase;color:rgba(248,245,239,.35)}
+
+  /* ================= THE PUBLICATION — one continuous editorial canvas ================= */
+  .rv{opacity:0;transform:translateY(22px);transition:opacity 1.1s ease,transform 1.2s cubic-bezier(.16,.6,.2,1)}
+  .rv.on{opacity:1;transform:none}
+
+  main.canvas{position:relative;z-index:10;background:var(--paper)}
+  .plate{position:relative;overflow:visible}
+
+  /* editorial voice */
+  .fol{font:300 9px/1 'Inter',sans-serif;letter-spacing:.5em;text-transform:uppercase;color:var(--gold)}
+  .statement{min-height:78vh;display:flex;flex-direction:column;justify-content:center;padding:14vh 10vw}
+  .statement h2{font:100 clamp(44px,7.5vw,120px)/1.06 'Inter',sans-serif;letter-spacing:-.02em;max-width:13ch;margin-top:30px}
+  .statement .after{margin-top:40px;font:italic 300 clamp(15px,1.4vw,19px)/1.8 'Cormorant Garamond',serif;color:var(--ink-soft);max-width:40ch}
+
+  /* scientific annotation: hairline leaders, tiny labels */
+  .spec{position:absolute;display:flex;align-items:center;gap:12px;white-space:nowrap;
+    font:300 8.5px/1.5 'Inter',sans-serif;letter-spacing:.26em;text-transform:uppercase;color:var(--ink-soft)}
+  .spec i{display:block;width:56px;height:1px;background:rgba(28,25,19,.30)}
+  .spec i::after{content:'';position:absolute;width:3px;height:3px;border-radius:50%;background:var(--gold);
+    transform:translateY(-1px)}
+  .spec.r{flex-direction:row-reverse}
+  .spec.r i::after{right:0}
+
+  /* annotated study — image + science, three planes deep */
+  .study{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:7vw;align-items:center;padding:16vh 10vw}
+  .study .wash{position:absolute;left:0;top:8%;bottom:8%;width:44%;object-fit:cover;opacity:.10;pointer-events:none;
+    -webkit-mask-image:linear-gradient(90deg,#000 40%,transparent);mask-image:linear-gradient(90deg,#000 40%,transparent)}
+  .study figure{position:relative;margin:0}
+  .study figure img{width:100%;border-radius:3px;display:block}
+  .study h2{font:100 clamp(36px,4.8vw,76px)/1.1 'Inter',sans-serif;letter-spacing:-.015em}
+  .study .body{margin-top:30px;font:300 14.5px/1.9 'Inter',sans-serif;color:var(--ink-soft);max-width:38ch}
+
+  /* museum exhibits */
+  .exhibits{padding:6vh 0}
+  .exhibit{position:relative;display:grid;grid-template-columns:.92fr 1.08fr;gap:7vw;align-items:center;padding:13vh 10vw}
+  .exhibit.flip{grid-template-columns:1.08fr .92fr}
+  .exhibit.flip figure{order:2}
+  .exhibit figure{position:relative;margin:0}
+  .exhibit figure img{width:100%;max-width:480px;display:block;border-radius:3px}
+  .exNo{font:300 11px/1 'Cormorant Garamond',serif;letter-spacing:.4em;color:var(--gold);font-style:italic}
+  .exhibit h3{font:100 clamp(34px,4.4vw,70px)/1.08 'Inter',sans-serif;letter-spacing:-.015em;margin-top:22px}
+  .exhibit .note{margin-top:26px;font:300 14px/1.9 'Inter',sans-serif;color:var(--ink-soft);max-width:36ch}
+  .exhibit .doc{display:inline-block;margin-top:34px;font:400 9.5px/1 'Inter',sans-serif;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--ink);text-decoration:none;border-bottom:1px solid var(--gold-soft);padding-bottom:7px;transition:border-color .3s}
+  .exhibit .doc:hover{border-color:var(--gold)}
+  .exhibit.empty{min-height:52vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .exhibit.empty h3{max-width:16ch}
+
+  /* full-bleed reality */
+  .bleed{position:relative;height:78vh;overflow:hidden}
+  .bleed img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .bleed .cap{position:absolute;left:10vw;bottom:9vh;max-width:44ch}
+  .bleed .cap h2{font:100 clamp(30px,3.8vw,58px)/1.14 'Inter',sans-serif;letter-spacing:-.01em;color:var(--ink)}
+  .bleed .cap .line{margin-top:18px;font:300 10px/1.9 'Inter',sans-serif;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft)}
+  .bleed .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(248,245,239,.14),rgba(248,245,239,0) 34%,rgba(248,245,239,.52) 88%)}
+
+  /* precision (manufacturing) */
+  .precision{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:7vw;align-items:center;padding:16vh 10vw}
+  .precision figure{position:relative;margin:0}
+  .precision figure img{width:100%;border-radius:3px;display:block}
+  .precision h2{font:100 clamp(34px,4.6vw,72px)/1.1 'Inter',sans-serif;letter-spacing:-.015em}
+  .precision .stats{margin-top:44px}
+  .certline{margin-top:38px;font:300 10px/2.1 'Inter',sans-serif;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-faint)}
+
+  /* the ending — same paper, no dark band */
+  .ending{min-height:72vh;display:flex;flex-direction:column;justify-content:center;padding:14vh 10vw;
+    border-top:1px solid rgba(184,147,90,.22)}
+  .ending h2{font:100 clamp(40px,6.4vw,104px)/1.06 'Inter',sans-serif;letter-spacing:-.02em;max-width:13ch;margin-top:28px}
+  .ending .cta{margin-top:48px;width:fit-content}
+  .footline{margin-top:12vh;display:flex;justify-content:space-between;gap:5vw;flex-wrap:wrap;
+    font:300 10px/2 'Inter',sans-serif;letter-spacing:.18em;color:var(--ink-faint)}
 
   @media (max-width:820px){
-    #panel{right:50%;transform:translate(50%,-50%) translateY(20px);width:88vw}
-    #panel.show{transform:translate(50%,-50%)}
-    #nav{display:none}
-    #wordmark{font-size:30px}
-    #logoWrap.dock{left:24px;top:22px}
-    #discover .q{font-size:15px}
+    .study,.exhibit,.exhibit.flip,.precision{grid-template-columns:1fr;gap:7vh;padding-left:7vw;padding-right:7vw}
+    .exhibit.flip figure{order:0}
+    .statement,.ending{padding-left:7vw;padding-right:7vw}
+    .spec{display:none}
+    .bleed{height:56vh}
+    .bleed .cap{left:7vw}
+    #navLinks{display:none}
+    #nav{padding:20px 24px}
+    #hero,section.block{padding-left:7vw;padding-right:7vw}
+    .row{flex-direction:column;gap:8px}
+    .row .d{text-align:left}
+  }
+  @media (prefers-reduced-motion:reduce){
+    #scrollHint{display:none}
   }
 </style>
 </head>
 <body>
-<div id="stage">
-  <canvas id="gl"></canvas>
-  <video class="film" id="filmA" muted playsinline preload="auto"></video>
-  <video class="film" id="filmB" muted playsinline preload="auto"></video>
-</div>
+<div id="introSpace"></div>
 
-<div id="veil"></div>
-<div id="loader"><div class="dot"></div></div>
-<button id="skip">Skip film</button>
+<canvas id="film"></canvas>
+<div id="stage"><canvas id="gl"></canvas></div>
+<canvas id="type"></canvas>
 
-<div id="logoWrap">
-  <img id="logoImg" alt="Ryuvita">
-  <div id="wordmark">RYUVITA</div>
-  <div id="wordtag">Nature, engineered for the future of nutrition</div>
-</div>
+<div class="whisper" data-w="0">one root</div>
+<div class="whisper" data-w="1">within — nature’s architecture</div>
+<div class="whisper" data-w="2">refined into function</div>
 
 <nav id="nav">
-  <a href="#ingredients">Ingredients</a>
-  <a href="#applications">Applications</a>
-  <a href="#science">Science</a>
-  <a href="#contact">Contact</a>
+  <div id="brand"><svg viewBox="0 0 240 240" style="width:19px;height:19px;vertical-align:-4px;margin-right:13px"><path d="M 218.46 102.50 A 100 100 0 1 1 137.51 21.55 L 218.46 102.50 Z" fill="#1c1913"/><circle cx="120" cy="120" r="11" fill="#f8f5ef"/></svg>SATORIA <b>RYUVITA</b></div>
+  <div id="navLinks">
+    <a href="#science">Science</a>
+    <a href="#ingredients">Ingredients</a>
+    <a href="#quality">Manufacturing</a>
+    <a href="#contact">Contact</a>
+  </div>
 </nav>
 
-<div id="hint">Drag to explore &nbsp;·&nbsp; Select an ingredient</div>
-<div id="tip"></div>
+<header id="hero">
+  <div class="kicker">SATORIA RYUVITA — FUNCTIONAL NUTRITION</div>
+  <h1>Nature, unlocked by science.</h1>
+  <div class="lede">One tapioca root holds an architecture more precise than any machine. We refine it into advanced functional nutrition — fibres, starches and sweetness, engineered for human health.</div>
+  <div class="actions">
+    <a class="cta" href="#ingredients">Explore our ingredients</a>
+    <a class="cta ghost" href="#story">Our story</a>
+  </div>
+</header>
 
-<aside id="panel">
-  <button class="close" aria-label="Close">✕</button>
-  <div class="kicker" id="pKicker">Ingredient</div>
-  <h2 id="pName"></h2>
-  <div class="latin" id="pLatin"></div>
-  <div class="sec"><h3>Key benefits</h3><p id="pBenefits"></p></div>
-  <div class="sec"><h3>Scientific highlight</h3><p id="pScience"></p></div>
-  <div class="sec"><h3>Applications</h3><div class="apps" id="pApps"></div></div>
-  <button class="explore">Explore ingredient</button>
-</aside>
+<main class="canvas">
 
-<div id="discover">
-  <div class="q">What are you creating?</div>
-  <div id="chips"></div>
-  <div id="focusNote"></div>
+<section class="plate statement" id="story">
+  <div class="fol rv">RYUVITA — A NUTRITION TECHNOLOGY COMPANY</div>
+  <h2 class="rv">Nature, understood completely.</h2>
+  <div class="after rv">We read the architecture of plants at the molecular level — and refine it, gently, into human health.</div>
+</section>
+
+<section class="plate study" id="science">
+  <img class="wash" src="assets/study-wash.png" onerror="this.onerror=null;this.src='https://d8j0ntlcm91z4.cloudfront.net/user_3GDFh7NOGPh6eySOHJHy3Cr5j27/hf_20260708_155521_c448c60a-cced-49f3-bba7-0be877d57eba.png'" alt="" aria-hidden="true">
+  <figure class="rv">
+    <img src="assets/hero.png" onerror="this.onerror=null;this.src='https://d8j0ntlcm91z4.cloudfront.net/user_3GDFh7NOGPh6eySOHJHy3Cr5j27/hf_20260708_164115_5023a6d2-51a3-4159-bd9b-c8791486bc88.png'" alt="Refined soluble fibre architecture, macro">
+    <span class="spec" style="left:5%;top:20%"><i></i>soluble fibre network</span>
+    <span class="spec r" style="right:4%;top:58%">translucent cell matrix<i></i></span>
+    <span class="spec" style="left:12%;bottom:10%"><i></i>refined starch lattice</span>
+  </figure>
+  <div>
+    <div class="fol rv">THE SCIENCE</div>
+    <h2 class="rv">Refined,<br>never replaced.</h2>
+    <div class="body rv">Inside every grain of our ingredients is the structure nature built. Our technology clarifies it — thinner walls, cleaner matrices, more precise function — without ever writing over it.</div>
+  </div>
+</section>
+
+<div class="exhibits" id="ingredients">
+  <section class="plate exhibit">
+    <figure class="rv">
+      <img src="assets/ing-dextrin.png" onerror="this.onerror=null;this.src='https://d8j0ntlcm91z4.cloudfront.net/user_3GDFh7NOGPh6eySOHJHy3Cr5j27/hf_20260708_173556_6c3a50b5-4058-439d-a22f-3f91c69fb95e.png'" alt="Resistant dextrin, museum presentation">
+      <span class="spec" style="left:6%;top:16%"><i></i>water-soluble</span>
+      <span class="spec r" style="right:5%;bottom:20%">low GI · heat &amp; acid stable<i></i></span>
+    </figure>
+    <div>
+      <div class="exNo rv">Exhibit I</div>
+      <h3 class="rv">Resistant Dextrin</h3>
+      <div class="note rv">The invisible fibre. Prebiotic wellness and deep sugar reduction that vanish into the finished product — stable through UHT, retort and low pH.</div>
+      <a class="doc rv" href="mailto:quality@satoriaryuvita.com?subject=Documentation%20request%3A%20Resistant%20Dextrin">Request documentation</a>
+    </div>
+  </section>
+
+  <section class="plate exhibit flip">
+    <figure class="rv">
+      <img src="assets/ing-pea.png" onerror="this.onerror=null;this.src='https://d8j0ntlcm91z4.cloudfront.net/user_3GDFh7NOGPh6eySOHJHy3Cr5j27/hf_20260708_173558_1d53367d-e460-4c89-b55e-f6a97573dc27.png'" alt="Pea protein, museum presentation">
+      <span class="spec" style="left:6%;top:18%"><i></i>≈ 85 % protein</span>
+      <span class="spec r" style="right:5%;bottom:16%">neutral taste<i></i></span>
+    </figure>
+    <div>
+      <div class="exNo rv">Exhibit II</div>
+      <h3 class="rv">Pea Protein</h3>
+      <div class="note rv">Complete and plant-born. A rounded amino acid profile with the neutrality to fortify without announcing itself.</div>
+      <a class="doc rv" href="mailto:quality@satoriaryuvita.com?subject=Documentation%20request%3A%20Pea%20Protein">Request documentation</a>
+    </div>
+  </section>
+
+  <section class="plate exhibit">
+    <figure class="rv">
+      <img src="assets/ing-rice.png" onerror="this.onerror=null;this.src='https://d8j0ntlcm91z4.cloudfront.net/user_3GDFh7NOGPh6eySOHJHy3Cr5j27/hf_20260708_173615_44dd9a0c-ae8c-448f-b7c6-e61b8a2f447a.png'" alt="Rice protein, museum presentation">
+      <span class="spec" style="left:6%;top:16%"><i></i>hypoallergenic</span>
+      <span class="spec r" style="right:5%;bottom:18%">infant-grade purity<i></i></span>
+    </figure>
+    <div>
+      <div class="exNo rv">Exhibit III</div>
+      <h3 class="rv">Rice Protein</h3>
+      <div class="note rv">Gentle strength. Enzymatically isolated, exceptionally mild — nourishment gentle enough for the very first foods.</div>
+      <a class="doc rv" href="mailto:quality@satoriaryuvita.com?subject=Documentation%20request%3A%20Rice%20Protein">Request documentation</a>
+    </div>
+  </section>
+
+  <section class="plate exhibit empty">
+    <div class="exNo rv">Exhibit IV</div>
+    <h3 class="rv">In development.</h3>
+    <div class="note rv" style="max-width:46ch">Fibre–protein structuring systems and fermentation-derived actives. Some exhibits are still being grown.</div>
+    <a class="doc rv" href="mailto:partnerships@satoriaryuvita.com?subject=Next%20generation%20co-development">Co-develop with us</a>
+  </section>
 </div>
+
+<div class="plate bleed" id="applications">
+  <img src="assets/applications.png" onerror="this.onerror=null;this.src='https://d8j0ntlcm91z4.cloudfront.net/user_3GDFh7NOGPh6eySOHJHy3Cr5j27/hf_20260708_173618_4a0a9828-b4b7-49bb-9d16-abc510dba4d0.png'" alt="Everyday foods made with Ryuvita ingredients">
+  <div class="scrim"></div>
+  <div class="cap">
+    <div class="fol rv">APPLICATIONS</div>
+    <h2 class="rv">It disappears into everything people love.</h2>
+    <div class="line rv">Beverage · Bakery · Dairy · Sports · Medical · Infant</div>
+  </div>
+</div>
+
+<section class="plate precision" id="quality">
+  <div>
+    <div class="fol rv">MANUFACTURING</div>
+    <h2 class="rv">Precision you can taste in nothing.</h2>
+    <div class="stats rv">
+      <div class="stat"><div class="v">99.97<span style="font-size:.5em">%</span></div><div class="l">Batch consistency</div></div>
+      <div class="stat"><div class="v">96<span style="font-size:.5em">%</span></div><div class="l">Raw material utilisation</div></div>
+      <div class="stat"><div class="v">0</div><div class="l">Waste to landfill</div></div>
+    </div>
+    <div class="certline rv">FSSC 22000 · ISO 9001 · HALAL · KOSHER · FULL TRACEABILITY</div>
+  </div>
+  <figure class="rv">
+    <img src="assets/manufacturing.png" onerror="this.onerror=null;this.src='https://d8j0ntlcm91z4.cloudfront.net/user_3GDFh7NOGPh6eySOHJHy3Cr5j27/hf_20260708_173632_152b622a-20af-42d0-9dec-12bcd1bd3ad0.png'" alt="Precision manufacturing detail">
+    <span class="spec" style="left:6%;top:18%"><i></i>316L stainless</span>
+    <span class="spec r" style="right:5%;bottom:16%">closed water loop<i></i></span>
+  </figure>
+</section>
+
+<section class="plate ending" id="contact">
+  <div class="fol rv">PARTNER WITH US</div>
+  <h2 class="rv">Let’s build what people eat next.</h2>
+  <a class="cta rv" href="mailto:partnerships@satoriaryuvita.com">Start a conversation</a>
+  <div class="footline rv">
+    <div>SATORIA RYUVITA — JAKARTA · INDONESIA</div>
+    <div>PARTNERSHIPS@SATORIARYUVITA.COM</div>
+    <div>© 2026</div>
+  </div>
+</section>
+
+</main>
+
+<button id="hold" aria-label="Hold to transform"><span class="ring"><span class="dot"></span></span><span class="l">Hold to transform</span></button>
+<button id="skip">Skip intro</button>
+<div id="scrollHint">Scroll<div class="line"></div></div>
+<div id="veil"><span>SATORIA RYUVITA</span></div>
 
 <script type="importmap">
 {"imports":{
@@ -167,528 +385,521 @@
 
 <script type="module">
 import * as THREE from 'three';
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 
-/* ================= CONFIG ================= */
-const FILM = [
-  {local:'assets/scene1.mp4', remote:'https://d8j0ntlcm91z4.cloudfront.net/user_3GDFh7NOGPh6eySOHJHy3Cr5j27/hf_20260708_122123_f6565ae0-aa52-4468-a793-1cd438ecb0bb.mp4'},
-  {local:'assets/scene2.mp4', remote:'https://d8j0ntlcm91z4.cloudfront.net/user_3GDFh7NOGPh6eySOHJHy3Cr5j27/hf_20260708_122128_1c5716d2-09d7-45ae-80bc-46fb1e36e4eb.mp4'},
-  {local:'assets/scene3.mp4', remote:'https://d8j0ntlcm91z4.cloudfront.net/user_3GDFh7NOGPh6eySOHJHy3Cr5j27/hf_20260708_122153_96e053e9-717e-48c1-beeb-2623bbbd4d27.mp4'}
+/* ================= assets — three film segments, each pinned to approved stills ================= */
+const CDN='https://d8j0ntlcm91z4.cloudfront.net/user_3GDFh7NOGPh6eySOHJHy3Cr5j27/';
+const SEGMENTS=[
+  {local:'assets/seg1.mp4', remote:CDN+'hf_20260708_162059_4ceb47cd-aa1c-44cf-a61e-7999280c8505.mp4', quota:38},   // root → bark opens
+  {local:'assets/seg2.mp4', remote:CDN+'hf_20260708_162104_3487c810-5305-4630-b47d-8222fd7960ed.mp4', quota:36},   // through the opening → starch interior
+  {local:'assets/seg3.mp4', remote:CDN+'hf_20260708_164256_e7450b2c-e9cd-418c-b245-032cf4db580a.mp4', quota:46}    // deeper — cells refine into the fibre world (never zooms out)
 ];
-const LOGO_SRC = 'assets/logo.png';   // drop your logo here — falls back to wordmark
-
-const INGREDIENTS = [
-  {id:'fibre',   name:'Soluble Dietary Fibre', latin:'Fibra solubilis', theta:15,
-   benefits:'Digestive wellness, prebiotic support and clean label sugar & fat reduction with exceptional process stability.',
-   science:'Low-viscosity resistant dextrin retains ≥ 90 % fibre content across UHT, retort and low-pH systems.',
-   apps:['Beverage','Dairy','Bakery','Medical'],
-   tags:['Beverage','Dairy','Bakery','Sugar Reduction','High Fibre','Low GI','Medical Nutrition','Snacks']},
-  {id:'protein', name:'Plant Protein', latin:'Oryza proteinum', theta:145,
-   benefits:'Complete amino acid profile, hypoallergenic and exceptionally neutral in taste — protein fortification without compromise.',
-   science:'Enzymatically isolated rice protein, ≥ 80 % purity with PDCAAS-optimised lysine complementation.',
-   apps:['Sports','Bakery','Snacks'],
-   tags:['Sports Nutrition','High Protein','Medical Nutrition','Bakery','Snacks','Infant Nutrition']},
-  {id:'rice',    name:'Rice Ingredients', latin:'Oryza sativa', theta:55,
-   benefits:'Clean label texture, gentle nutrition and natural mildness — the quiet foundation of infant and family nutrition.',
-   science:'Precision-milled rice starches and flours with tailored gelatinisation curves for delicate systems.',
-   apps:['Infant','Bakery','Dairy'],
-   tags:['Infant Nutrition','Bakery','Snacks','Dairy','Beverage']},
-  {id:'sweet',   name:'Natural Sweeteners', latin:'Dulcedo naturalis', theta:180,
-   benefits:'Rounded, sugar-like sweetness from rice — enabling deep sugar reduction while preserving body and mouthfeel.',
-   science:'Graded rice syrups, DE-controlled for predictable sweetness, browning and humectancy.',
-   apps:['Beverage','Bakery','Dairy'],
-   tags:['Sugar Reduction','Beverage','Bakery','Dairy','Snacks','Low GI']},
-  {id:'carb',    name:'Functional Carbohydrates', latin:'Carbohydrata functionalia', theta:320,
-   benefits:'Sustained energy release and low glycaemic response — engineered carbohydrates for performance and clinical nutrition.',
-   science:'Slowly digestible carbohydrate matrices with clinically documented glycaemic index below 40.',
-   apps:['Sports','Medical','Beverage'],
-   tags:['Low GI','Sports Nutrition','Medical Nutrition','Beverage','Infant Nutrition']},
-  {id:'future',  name:'Future Nutrition', latin:'Nutritio futura', theta:215,
-   benefits:'Next-generation fermentation and biotransformation platforms — where Ryuvita research becomes tomorrow’s nutrition.',
-   science:'Precision fermentation pipeline converting rice substrates into novel postbiotic and functional actives.',
-   apps:['Medical','Sports','Beverage'],
-   tags:['Medical Nutrition','Sports Nutrition','Infant Nutrition','Beverage','High Protein']}
+/* bridge photographs — the true anchors, inserted between segments so each
+   generation dissolves to the real photo, never to another generation's guess */
+const BRIDGES=[
+  {after:0, local:'assets/anchor2.png', remote:CDN+'hf_20260708_155012_8fecc04f-5351-43a7-8d68-ada0089032d6.png'},
+  {after:1, local:'assets/anchor3.png', remote:CDN+'hf_20260708_155123_436382c1-1ef3-4bd3-8e22-74b631762497.png'}
 ];
-const CATEGORIES = ['Beverage','Bakery','Dairy','Sports Nutrition','Medical Nutrition','Snacks',
-                    'Infant Nutrition','Sugar Reduction','High Protein','High Fibre','Low GI'];
+const POSTER={local:'assets/poster.png', remote:CDN+'hf_20260708_152313_d238a2cc-1202-4be5-b8f7-992f7eb96499.png'};
+const HERO_POSTER={local:'assets/hero.png', remote:CDN+'hf_20260708_164115_5023a6d2-51a3-4159-bd9b-c8791486bc88.png'};
 
-/* ================= SCENE ================= */
-const canvas = document.getElementById('gl');
-const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false});
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.05;
-renderer.outputColorSpace = THREE.SRGBColorSpace;
+/* ================= helpers ================= */
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const seg=(p,a,b)=>{const t=clamp((p-a)/(b-a),0,1);return t*t*(3-2*t);};
+const hash=(n)=>{const s=Math.sin(n*127.1+311.7)*43758.5453;return s-Math.floor(s);};
 
-const scene = new THREE.Scene();
-scene.background = new THREE.Color('#030805');
-scene.fog = new THREE.FogExp2('#030805', 0.028);
+/* ================= THE FILM — scroll-scrubbed image sequence ================= */
+/* Built in-browser from the cinematic: fetched once as a blob, decoded into
+   ~84 ImageBitmaps, scrubbed at 60fps with crossfade interpolation.        */
+const filmCanvas=document.getElementById('film');
+const fx=filmCanvas.getContext('2d');
+let frames=[],framesReady=0,filmAspect=16/9,poster=null,filmFailed=false;
+const N_FRAMES=122,FRAME_W=820;   // dense sequence: small inter-frame deltas = no stepping, no ghosting
 
-const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 120);
-camera.position.set(0, 2.1, 8.7);
-
-const pmrem = new THREE.PMREMGenerator(renderer);
-scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.06).texture;
-
-/* lights */
-const key = new THREE.SpotLight('#f7ecd4', 260, 60, Math.PI/5, 0.55, 1.6);
-key.position.set(0, 14, 4); scene.add(key);
-const rim = new THREE.DirectionalLight('#cfe0c6', 0.5); rim.position.set(-6, 2, -6); scene.add(rim);
-const warm = new THREE.PointLight('#c9a86a', 26, 30, 1.8); warm.position.set(0, -2.5, 3); scene.add(warm);
-scene.add(new THREE.AmbientLight('#22392c', 0.55));
-
-/* backdrop gradient + god rays + floor glow (canvas textures) */
-function radialTex(stops, size=512){
-  const c=document.createElement('canvas'); c.width=c.height=size;
-  const g=c.getContext('2d'); const gr=g.createRadialGradient(size/2,size/2,0,size/2,size/2,size/2);
-  stops.forEach(s=>gr.addColorStop(s[0],s[1])); g.fillStyle=gr; g.fillRect(0,0,size,size);
-  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return t;
+function fitCover(w,h,cw,ch,zoom=1,ox=0,oy=0){ // cover-fit with zoom + parallax offset
+  const s=Math.max(cw/w,ch/h)*zoom;
+  return [(cw-w*s)/2+ox,(ch-h*s)/2+oy,w*s,h*s];
 }
-function linearTex(stops, w=16, h=512){
-  const c=document.createElement('canvas'); c.width=w; c.height=h;
-  const g=c.getContext('2d'); const gr=g.createLinearGradient(0,0,0,h);
-  stops.forEach(s=>gr.addColorStop(s[0],s[1])); g.fillStyle=gr; g.fillRect(0,0,w,h);
-  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return t;
+function sizeFilm(){filmCanvas.width=innerWidth;filmCanvas.height=innerHeight;}
+sizeFilm();
+
+let heroPoster=null;
+function loadStill(src,assign){
+  const img=new Image();img.crossOrigin='anonymous';
+  img.onload=()=>assign(img);
+  img.onerror=()=>{const r=new Image();r.crossOrigin='anonymous';r.onload=()=>assign(r);r.src=src.remote;};
+  img.src=src.local;
 }
-const backdrop = new THREE.Mesh(
-  new THREE.PlaneGeometry(90, 50),
-  new THREE.MeshBasicMaterial({map:radialTex([[0,'#17392c'],[0.45,'#0b2318'],[1,'#020604']]), fog:false})
-);
-backdrop.position.set(0, 0.5, -22); scene.add(backdrop);
+loadStill(POSTER,i=>{poster=i;});
+loadStill(HERO_POSTER,i=>{heroPoster=i;});
 
-const rayMat = new THREE.MeshBasicMaterial({
-  map:linearTex([[0,'rgba(220,235,215,0.32)'],[0.6,'rgba(200,220,195,0.06)'],[1,'rgba(200,220,195,0)']]),
-  transparent:true, blending:THREE.AdditiveBlending, depthWrite:false, fog:false, opacity:.5
-});
-[[-2.6,.12],[0,.0],[2.8,-.14]].forEach(([x,rz],i)=>{
-  const ray = new THREE.Mesh(new THREE.PlaneGeometry(2.4+i*0.6, 18), rayMat);
-  ray.position.set(x, 6.5, -9); ray.rotation.z = rz; scene.add(ray);
-});
-const floorGlow = new THREE.Mesh(
-  new THREE.PlaneGeometry(14, 6),
-  new THREE.MeshBasicMaterial({map:radialTex([[0,'rgba(120,105,70,0.30)'],[0.5,'rgba(60,70,50,0.10)'],[1,'rgba(0,0,0,0)']]),
-    transparent:true, blending:THREE.AdditiveBlending, depthWrite:false})
-);
-floorGlow.rotation.x = -Math.PI/2; floorGlow.position.y = -3.1; scene.add(floorGlow);
-
-/* ---------- THE LIVING CORE ---------- */
-const ecosystem = new THREE.Group(); scene.add(ecosystem);
-const coreGroup = new THREE.Group(); ecosystem.add(coreGroup);
-
-const coreGlass = new THREE.Mesh(
-  new THREE.SphereGeometry(1.62, 96, 96),
-  new THREE.MeshPhysicalMaterial({
-    color:'#ffffff', transmission:1, roughness:0.04, thickness:1.6, ior:1.45,
-    clearcoat:1, clearcoatRoughness:0.06, envMapIntensity:1.4,
-    specularIntensity:1, transparent:true
-  })
-);
-coreGroup.add(coreGlass);
-
-const fibreMat = new THREE.MeshPhysicalMaterial({
-  color:'#efe3cb', roughness:0.5, metalness:0, sheen:1, sheenColor:'#fff6e2',
-  clearcoat:0.4, clearcoatRoughness:0.5, emissive:'#3a2f1c', emissiveIntensity:0.25
-});
-const fibres = new THREE.Group();
-[[2,3,1.0],[3,4,0.84],[2,5,0.66]].forEach(([p,q,s],i)=>{
-  const k = new THREE.Mesh(new THREE.TorusKnotGeometry(0.82*s, 0.085*s, 280, 16, p, q), fibreMat);
-  k.rotation.set(i*1.1, i*0.7, i*0.4);
-  fibres.add(k);
-});
-coreGroup.add(fibres);
-
-function makeDust(count, radius, size, color, opacity){
-  const pos = new Float32Array(count*3);
-  for(let i=0;i<count;i++){
-    const r = radius*Math.cbrt(Math.random());
-    const th = Math.random()*Math.PI*2, ph = Math.acos(2*Math.random()-1);
-    pos[i*3]=r*Math.sin(ph)*Math.cos(th); pos[i*3+1]=r*Math.cos(ph); pos[i*3+2]=r*Math.sin(ph)*Math.sin(th);
+/* per-frame corrective offsets (source-bitmap px) — cancel seam position pops */
+const alignX=new Float32Array(N_FRAMES),alignY=new Float32Array(N_FRAMES);
+function luma(img,w,h){
+  const c=document.createElement('canvas');c.width=w;c.height=h;
+  const g=c.getContext('2d',{willReadFrequently:true});
+  g.drawImage(img,0,0,w,h);
+  const d=g.getImageData(0,0,w,h).data,out=new Float32Array(w*h);
+  for(let i=0;i<w*h;i++)out[i]=d[i*4]*0.299+d[i*4+1]*0.587+d[i*4+2]*0.114;
+  return out;
+}
+function sad(a,b,w,h,dx,dy){
+  let s=0,n=0;
+  for(let y=4;y<h-4;y+=2)for(let x=4;x<w-4;x+=2){
+    const x2=x+dx,y2=y+dy;
+    if(x2<0||y2<0||x2>=w||y2>=h)continue;
+    s+=Math.abs(a[y*w+x]-b[y2*w+x2]);n++;
   }
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
-  const mat = new THREE.PointsMaterial({color, size, transparent:true, opacity,
-    map:radialTex([[0,'rgba(255,255,255,1)'],[0.4,'rgba(255,255,255,0.5)'],[1,'rgba(255,255,255,0)']],64),
-    blending:THREE.AdditiveBlending, depthWrite:false});
-  return new THREE.Points(geo, mat);
+  return n?s/n:1e9;
 }
-coreGroup.add(makeDust(160, 1.35, 0.05, '#e8d9b8', 0.75));
-scene.add(makeDust(420, 16, 0.06, '#9fae95', 0.16)); // ambient room dust
-
-/* ---------- INGREDIENT NODES ---------- */
-const RING_A = 3.65, RING_B = 2.3;
-const ringTilt = new THREE.Group();
-ringTilt.rotation.x = -0.44; ringTilt.rotation.z = 0.05;
-ecosystem.add(ringTilt);
-
-/* orbital gold rings */
-function ellipseRing(a, b, tube, opacity){
-  const pts=[]; for(let i=0;i<=140;i++){const t=i/140*Math.PI*2; pts.push(new THREE.Vector3(a*Math.cos(t), 0, b*Math.sin(t)));}
-  const curve = new THREE.CatmullRomCurve3(pts, true);
-  const mesh = new THREE.Mesh(new THREE.TubeGeometry(curve, 200, tube, 10, true),
-    new THREE.MeshPhysicalMaterial({color:'#c8a565', metalness:0.75, roughness:0.28,
-      emissive:'#8a6c33', emissiveIntensity:0.35, transparent:true, opacity}));
-  return mesh;
-}
-ringTilt.add(ellipseRing(RING_A, RING_B, 0.014, 0.6));
-const ring2 = ellipseRing(RING_A*1.06, RING_B*1.06, 0.010, 0.35);
-ring2.rotation.x = 0.09; ringTilt.add(ring2);
-
-const nodeGlassMat = () => new THREE.MeshPhysicalMaterial({
-  color:'#ffffff', transmission:0.97, roughness:0.14, thickness:0.7, ior:1.4,
-  clearcoat:0.8, clearcoatRoughness:0.2, envMapIntensity:0.85, transparent:true
-});
-
-function innerContent(id){
-  const g = new THREE.Group();
-  const ivory = new THREE.MeshPhysicalMaterial({color:'#efe6d2', roughness:0.75, sheen:0.8, sheenColor:'#fff'});
-  if(id==='sweet'){ // golden syrup
-    g.add(new THREE.Mesh(new THREE.IcosahedronGeometry(0.30, 3),
-      new THREE.MeshPhysicalMaterial({color:'#e0a52e', transmission:0.75, roughness:0.1, thickness:0.8, ior:1.42,
-        emissive:'#6b4a08', emissiveIntensity:0.5, attenuationColor:'#c07f14', attenuationDistance:1.6})));
-  } else if(id==='protein'){
-    for(let i=0;i<14;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(0.07+Math.random()*0.05,16,16),ivory);
-      m.position.setFromSphericalCoords(0.16+Math.random()*0.16, Math.acos(2*Math.random()-1), Math.random()*Math.PI*2); g.add(m);}
-  } else if(id==='rice'){
-    const grain=new THREE.CapsuleGeometry(0.028,0.09,4,10);
-    for(let i=0;i<34;i++){const m=new THREE.Mesh(grain,ivory);
-      m.position.setFromSphericalCoords(0.30*Math.cbrt(Math.random()), Math.acos(2*Math.random()-1), Math.random()*Math.PI*2);
-      m.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3); g.add(m);}
-  } else if(id==='carb'){ // crystalline
-    g.add(new THREE.Mesh(new THREE.OctahedronGeometry(0.27,0),
-      new THREE.MeshPhysicalMaterial({color:'#f8f6ef', transmission:0.9, roughness:0.18, thickness:0.8, ior:1.55})));
-    const shard=new THREE.OctahedronGeometry(0.08,0);
-    for(let i=0;i<6;i++){const m=new THREE.Mesh(shard,ivory);
-      m.position.setFromSphericalCoords(0.3, Math.acos(2*Math.random()-1), Math.random()*Math.PI*2); g.add(m);}
-  } else if(id==='fibre'){
-    g.add(new THREE.Mesh(new THREE.TorusKnotGeometry(0.20,0.045,160,12,2,3),
-      new THREE.MeshPhysicalMaterial({color:'#f3ecdc', roughness:0.5, sheen:1, sheenColor:'#fff'})));
-  } else { // future — soft green cells
-    const green=new THREE.MeshPhysicalMaterial({color:'#9db98a', roughness:0.55, transmission:0.35, thickness:0.4, sheen:0.6});
-    for(let i=0;i<10;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(0.09+Math.random()*0.05,18,18),green);
-      m.position.setFromSphericalCoords(0.18+Math.random()*0.14, Math.acos(2*Math.random()-1), Math.random()*Math.PI*2); g.add(m);}
-  }
-  g.add(makeDust(40, 0.34, 0.03, '#e8d9b8', 0.65));
-  return g;
-}
-
-/* ---------- ribbons (flowing connections) ---------- */
-const ribbonUniforms = [];
-function makeRibbon(node){
-  const uniforms = {uTime:{value:0}, uPulse:{value:1}};
-  ribbonUniforms.push(uniforms);
-  const mat = new THREE.ShaderMaterial({
-    transparent:true, blending:THREE.AdditiveBlending, depthWrite:false,
-    uniforms,
-    vertexShader:`varying vec2 vUv; void main(){vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
-    fragmentShader:`
-      varying vec2 vUv; uniform float uTime; uniform float uPulse;
-      void main(){
-        float flow = fract(vUv.x*1.5 - uTime*0.22);
-        float band = smoothstep(0.0,0.35,flow)*smoothstep(0.85,0.5,flow);
-        vec3 col = mix(vec3(0.95,0.88,0.72), vec3(0.79,0.66,0.42), vUv.x);
-        float edge = sin(vUv.y*3.14159);
-        float a = (0.10 + 0.45*band) * edge * uPulse;
-        gl_FragColor = vec4(col, a);
-      }`
-  });
-  const mesh = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(),new THREE.Vector3(1,0,0)]), 60, 0.026, 8, false), mat);
-  mesh.frustumCulled = false;
-  node.ribbon = mesh;
-  ringTilt.add(mesh);
-}
-function updateRibbon(node){
-  const end = node.group.position.clone().multiplyScalar(0.97);
-  const start = end.clone().normalize().multiplyScalar(1.7);
-  start.y += 0.1;
-  const mid1 = start.clone().lerp(end, 0.35); mid1.y += 0.35;
-  const mid2 = start.clone().lerp(end, 0.7);  mid2.y -= 0.18;
-  const curve = new THREE.CatmullRomCurve3([start, mid1, mid2, end]);
-  node.ribbon.geometry.dispose();
-  node.ribbon.geometry = new THREE.TubeGeometry(curve, 60, 0.026, 8, false);
-}
-
-/* ---------- build nodes ---------- */
-const nodes = [];
-INGREDIENTS.forEach(ing=>{
-  const group = new THREE.Group();
-  const glass = new THREE.Mesh(new THREE.SphereGeometry(0.52, 64, 64), nodeGlassMat());
-  const inner = innerContent(ing.id);
-  group.add(glass, inner);
-  const node = {ing, group, glass, inner,
-    theta: THREE.MathUtils.degToRad(ing.theta),
-    baseTheta: THREE.MathUtils.degToRad(ing.theta),
-    radiusScale:1, targetRadiusScale:1,
-    scale:1, targetScale:1,
-    dim:1, targetDim:1,
-    bobOff: Math.random()*Math.PI*2};
-  glass.userData.node = node;
-  ringTilt.add(group);
-  makeRibbon(node);
-  nodes.push(node);
-});
-
-function placeNode(n, t){
-  const a = RING_A*n.radiusScale, b = RING_B*n.radiusScale;
-  n.group.position.set(a*Math.cos(n.theta), Math.sin(t*0.4+n.bobOff)*0.09, b*Math.sin(n.theta));
-}
-
-/* ================= INTERACTION ================= */
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true; controls.dampingFactor = 0.045;
-controls.enablePan = false; controls.enabled = false;
-controls.minDistance = 4.6; controls.maxDistance = 13;
-controls.minPolarAngle = Math.PI*0.22; controls.maxPolarAngle = Math.PI*0.62;
-controls.rotateSpeed = 0.55; controls.zoomSpeed = 0.6;
-controls.target.set(0, 0.1, 0);
-
-const raycaster = new THREE.Raycaster();
-const pointer = new THREE.Vector2(-2,-2);
-let hovered = null, selected = null, uiLive = false;
-
-const tip = document.getElementById('tip');
-addEventListener('pointermove', e=>{
-  pointer.set(e.clientX/innerWidth*2-1, -(e.clientY/innerHeight)*2+1);
-  tip.style.left = (e.clientX+18)+'px'; tip.style.top = (e.clientY-14)+'px';
-});
-
-const panel = document.getElementById('panel');
-function openPanel(ing){
-  document.getElementById('pName').textContent = ing.name;
-  document.getElementById('pLatin').textContent = ing.latin;
-  document.getElementById('pBenefits').textContent = ing.benefits;
-  document.getElementById('pScience').textContent = ing.science;
-  document.getElementById('pApps').innerHTML = ing.apps.map(a=>`<span>${a}</span>`).join('');
-  panel.classList.add('show');
-}
-panel.querySelector('.close').onclick = ()=>{ panel.classList.remove('show'); selected=null; };
-panel.querySelector('.explore').onclick = ()=>{ panel.querySelector('.explore').textContent='Coming soon';
-  setTimeout(()=>panel.querySelector('.explore').textContent='Explore ingredient',1400); };
-
-canvas.addEventListener('click', e=>{
-  if(!uiLive) return;
-  // fresh raycast — don't rely on the hover loop (fixes first-tap on touch devices)
-  pointer.set(e.clientX/innerWidth*2-1, -(e.clientY/innerHeight)*2+1);
-  raycaster.setFromCamera(pointer, camera);
-  const hits = raycaster.intersectObjects(nodes.map(n=>n.glass), false);
-  if(hits.length){ selected = hits[0].object.userData.node; openPanel(selected.ing); }
-});
-
-/* ---------- discovery mode ---------- */
-const chipsEl = document.getElementById('chips');
-const noteEl = document.getElementById('focusNote');
-let activeCat = null;
-CATEGORIES.forEach(cat=>{
-  const b = document.createElement('button'); b.textContent = cat;
-  b.onclick = ()=>{
-    if(activeCat===cat){ activeCat=null; b.classList.remove('active'); resetFocus(); return; }
-    activeCat = cat;
-    [...chipsEl.children].forEach(c=>c.classList.remove('active'));
-    b.classList.add('active');
-    focusCategory(cat);
-  };
-  chipsEl.appendChild(b);
-});
-function focusCategory(cat){
-  const rel = nodes.filter(n=>n.ing.tags.includes(cat));
-  const irr = nodes.filter(n=>!n.ing.tags.includes(cat));
-  /* relevant nodes sweep to the front arc (facing camera), others recede */
-  const frontCenter = Math.PI/2; // +Z faces camera
-  rel.forEach((n,i)=>{
-    const spread = 0.82;
-    n.theta = frontCenter + (i-(rel.length-1)/2)*spread;
-    n.targetRadiusScale = 1.04; n.targetScale = 1.12; n.targetDim = 1;
-  });
-  irr.forEach((n,i)=>{
-    n.theta = -Math.PI/2 + (i-(irr.length-1)/2)*0.5;
-    n.targetRadiusScale = 1.35; n.targetScale = 0.8; n.targetDim = 0.25;
-  });
-  noteEl.textContent = `${rel.length} Ryuvita ingredient${rel.length>1?'s':''} engineered for ${cat.toLowerCase()}`;
-  noteEl.classList.add('show');
-}
-function resetFocus(){
-  nodes.forEach(n=>{ n.theta = n.baseTheta; n.targetRadiusScale=1; n.targetScale=1; n.targetDim=1; });
-  noteEl.classList.remove('show');
-}
-
-/* ================= FILM INTRO + MAGIC TRANSITION ================= */
-const veil = document.getElementById('veil');
-const loader = document.getElementById('loader');
-const skip = document.getElementById('skip');
-const vids = [document.getElementById('filmA'), document.getElementById('filmB')];
-let finished = false;
-
-const blobCache = {};
-function attach(v, url, timeout){
-  return new Promise(res=>{
-    let settled = false;
-    const done = ok=>{ if(!settled){ settled = true; res(ok); } };
-    v.onerror = ()=>done(false);
-    v.addEventListener('canplaythrough', ()=>done(true), {once:true});
-    v.src = url; v.load();
-    setTimeout(()=>done(v.readyState>=3), timeout);
-  });
-}
-async function loadFilm(v, src){
-  // 1) local file next to the page (assets/…)
-  if(await attach(v, src.local, 2500)) return true;
-  // 2) remote CDN — fetch fully as a blob (CDN lacks range support; blob also gives gapless chaining)
+function seamOffset(refImg,movImg){
+  /* coarse-to-fine translation estimate; returns offset in source-bitmap px */
   try{
-    if(!blobCache[src.remote]){
-      const resp = await fetch(src.remote);
-      if(!resp.ok) return false;
-      blobCache[src.remote] = URL.createObjectURL(await resp.blob());
+    const w1=192,h1=108;
+    const A=luma(refImg,w1,h1),B=luma(movImg,w1,h1);
+    let best={dx:0,dy:0,v:1e9};
+    for(let dy=-6;dy<=6;dy++)for(let dx=-6;dx<=6;dx++){
+      const v=sad(A,B,w1,h1,dx,dy);
+      if(v<best.v)best={dx,dy,v};
     }
-    return await attach(v, blobCache[src.remote], 15000);
-  }catch(e){ return false; }
+    const w2=384,h2=216;
+    const A2=luma(refImg,w2,h2),B2=luma(movImg,w2,h2);
+    let fine={dx:best.dx*2,dy:best.dy*2,v:1e9};
+    for(let dy=best.dy*2-2;dy<=best.dy*2+2;dy++)for(let dx=best.dx*2-2;dx<=best.dx*2+2;dx++){
+      const v=sad(A2,B2,w2,h2,dx,dy);
+      if(v<fine.v)fine={dx,dy,v};
+    }
+    const k=FRAME_W/w2;
+    return {x:clamp(-fine.dx*k,-14,14),y:clamp(-fine.dy*k,-14,14)};
+  }catch(e){return {x:0,y:0};}
 }
-
-async function playFilm(){
-  const ok0 = await loadFilm(vids[0], FILM[0]);
-  if(!ok0){ enterLive(true); return; }
-  loader.style.opacity = 0; setTimeout(()=>loader.remove(), 1300);
-  vids[0].style.opacity = 1; vids[0].style.zIndex = 10;
-  try{ await vids[0].play(); }catch(e){ enterLive(true); return; }
-  veil.style.opacity = 0;
-  setTimeout(()=>skip.classList.add('show'), 2500);
-  loadFilm(vids[1], FILM[1]);
-
-  vids[0].onended = ()=>{
-    vids[1].style.opacity=1; vids[1].style.zIndex=11;
-    vids[1].play().catch(()=>enterLive(true));
-    setTimeout(()=>{vids[0].style.opacity=0;},120);
-    // reuse element A for clip 3
-    loadFilm(vids[0], FILM[2]);
-    vids[1].onended = ()=>{
-      vids[0].style.opacity=1; vids[0].style.zIndex=12;
-      vids[0].play().catch(()=>enterLive(true));
-      setTimeout(()=>{vids[1].style.opacity=0;},120);
-      // start rendering live scene under the video for the handoff
-      startRendering();
-      vids[0].onended = ()=>enterLive(false);
-      // begin crossfade slightly before the end for total invisibility
-      const v = vids[0];
-      const watch = setInterval(()=>{
-        if(v.duration && v.duration - v.currentTime < 1.2){ clearInterval(watch); enterLive(false); }
-      }, 100);
-    };
-  };
-}
-
-skip.onclick = ()=>enterLive(true);
-
-let rendering = false, transitionT = -1;
-function startRendering(){ if(!rendering){ rendering = true; } }
-
-function enterLive(hard){
-  if(finished) return; finished = true;
-  skip.classList.remove('show');
-  startRendering();
-  if(hard){
-    veil.style.transition = 'opacity .7s ease';
-    veil.style.opacity = 1;
-    setTimeout(()=>{
-      vids.forEach(v=>{v.pause(); v.style.opacity=0;});
-      transitionT = 0;
-      veil.style.transition = 'opacity 1.8s ease';
-      veil.style.opacity = 0;
-    }, 750);
-  } else {
-    // soft crossfade from final video frame to live render
-    vids.forEach(v=>{ v.style.transition = 'opacity 2.2s ease'; v.style.opacity = 0; });
-    transitionT = 0;
-    setTimeout(()=>vids.forEach(v=>v.pause()), 2400);
+function applySeamAlign(bridgeIdx){
+  /* align the frames AFTER a bridge to the bridge photo, easing to zero over 8 frames */
+  const ref=frames[bridgeIdx],mov=frames[bridgeIdx+1];
+  if(!ref||!mov)return;
+  const o=seamOffset(ref,mov);
+  for(let k=0;k<12;k++){
+    const idx=bridgeIdx+1+k;
+    if(idx>=N_FRAMES)break;
+    const w=1-k/12,e=w*w*(3-2*w);
+    alignX[idx]=o.x*e;alignY[idx]=o.y*e;
   }
-  loader.style.opacity = 0; setTimeout(()=>{ if(loader.parentNode) loader.remove(); }, 1300);
-  setTimeout(revealBrand, 1900);
 }
 
-function revealBrand(){
-  const wrap = document.getElementById('logoWrap');
-  const img = document.getElementById('logoImg');
-  const probe = new Image();
-  probe.onload = ()=>{ img.src = LOGO_SRC; img.style.display='block'; document.getElementById('wordmark').style.display='none'; wrap.classList.add('reveal'); };
-  probe.onerror = ()=>{ wrap.classList.add('reveal'); };
-  probe.src = LOGO_SRC;
-  setTimeout(()=>{
-    wrap.classList.add('dock');
-    document.getElementById('nav').classList.add('show');
-    document.getElementById('discover').classList.add('show');
-    document.getElementById('hint').classList.add('show');
-    controls.enabled = true; uiLive = true;
-    setTimeout(()=>document.getElementById('hint').classList.remove('show'), 6000);
-  }, 4200);
+const bridgeImgs=BRIDGES.map(b=>new Promise(res=>{
+  const img=new Image();img.crossOrigin='anonymous';
+  img.onload=()=>res(img);
+  img.onerror=()=>{const r=new Image();r.crossOrigin='anonymous';r.onload=()=>res(r);r.onerror=()=>res(null);r.src=b.remote;};
+  img.src=b.local;
+}));
+
+/* dynamic seam positions (bridges move when tails are trimmed) */
+const seamSet=new Set();
+function bestMatch(refImg,arr,from,to){
+  /* index in arr whose content is closest to the reference photo */
+  const w=192,h=108,A=luma(refImg,w,h);
+  let best=from,bv=1e9;
+  for(let i=from;i<=to;i++){
+    const v=sad(A,luma(arr[i],w,h),w,h,0,0);
+    if(v<bv){bv=v;best=i;}
+  }
+  return best;
+}
+async function extractSegment(url,quota){
+  const v=document.createElement('video');
+  v.muted=true;v.playsInline=true;v.preload='auto';v.crossOrigin='anonymous';
+  const ok=await new Promise(res=>{
+    v.onerror=()=>res(false);
+    v.onloadedmetadata=()=>res(true);
+    v.src=url;v.load();
+    setTimeout(()=>res(v.readyState>=1),4000);
+  });
+  if(!ok)return null;
+  const D=v.duration||4;
+  const h=Math.round(FRAME_W*v.videoHeight/v.videoWidth)||504;
+  filmAspect=v.videoWidth/v.videoHeight||16/9;
+  const out=[];
+  for(let i=0;i<quota;i++){
+    v.currentTime=(i/(quota-1))*Math.max(0.01,D-0.06);
+    await new Promise(res=>{const t=setTimeout(res,900);v.onseeked=()=>{clearTimeout(t);res();};});
+    try{out.push(await createImageBitmap(v,{resizeWidth:FRAME_W,resizeHeight:h}));}
+    catch(e){return null;}
+  }
+  return out;
+}
+async function loadFilm(){
+  /* all segment downloads start in parallel; extraction runs in story order */
+  const sources=SEGMENTS.map(seg=>(async()=>{
+    const probe=document.createElement('video');
+    const tryLocal=await new Promise(res=>{
+      probe.onerror=()=>res(false);
+      probe.onloadedmetadata=()=>res(true);
+      probe.src=seg.local;probe.load();
+      setTimeout(()=>res(probe.readyState>=1),1800);
+    });
+    if(tryLocal)return seg.local;
+    if(!seg.remote||seg.remote.startsWith('__'))return null;
+    try{
+      const r=await fetch(seg.remote);
+      if(!r.ok)return null;
+      return URL.createObjectURL(await r.blob());
+    }catch(e){return null;}
+  })());
+  for(let s=0;s<SEGMENTS.length;s++){
+    const url=await sources[s];
+    if(!url){filmFailed=true;return;}
+    let tmp=await extractSegment(url,SEGMENTS[s].quota);
+    if(!tmp){filmFailed=true;return;}
+    /* HEAD TRIM: drop any static or duplicated opening of this segment —
+       start exactly where it departs from the previous anchor photograph */
+    const prevBr=BRIDGES.find(b=>b.after===s-1);
+    if(prevBr&&prevBr._img){
+      const cut=bestMatch(prevBr._img,tmp,0,Math.min(8,tmp.length-19));
+      if(tmp.length-(cut+1)>=18)tmp=tmp.slice(cut+1);
+    }
+    /* TAIL TRIM: a segment often reaches its target early then drifts past it —
+       cut at the frame closest to the next anchor ("stopped too late" fix) */
+    const br=BRIDGES.find(b=>b.after===s);
+    if(br){
+      br._img=await bridgeImgs[BRIDGES.indexOf(br)];
+      if(br._img){
+        const end=bestMatch(br._img,tmp,Math.max(18,tmp.length-14),tmp.length-1);
+        if(end>=18)tmp=tmp.slice(0,end);
+      }
+    }
+    for(const f of tmp)frames[framesReady++]=f;
+    if(br){
+      seamSet.add(framesReady-1);seamSet.add(framesReady);
+      /* the bridge photo is resampled to the SAME resolution as the film frames —
+         otherwise its extra sharpness pulses at the seam (visible as flicker) */
+      let bimg=br._img?await createImageBitmap(br._img,
+        {resizeWidth:FRAME_W,resizeHeight:Math.round(FRAME_W*br._img.height/br._img.width)}).catch(()=>br._img):null;
+      frames[framesReady]=bimg||frames[framesReady-1];
+      br._idx=framesReady;
+      framesReady++;
+    }
+    if(prevBr&&prevBr._idx!==undefined)applySeamAlign(prevBr._idx);
+  }
+}
+/* device modes: desktop scrubs by scroll; phones hold-to-transform (film downloads
+   lazily on first hold); returning or reduced-motion visitors rest on the fibre hero */
+const IS_MOBILE=matchMedia('(pointer:coarse)').matches&&innerWidth<820;
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SEEN=sessionStorage.getItem('sr_intro')==='1';
+const mobileIntro=IS_MOBILE&&!REDUCED&&!SEEN;
+let filmLoadStarted=false;
+if(REDUCED||(IS_MOBILE&&!mobileIntro)){filmFailed=true;}
+else if(!IS_MOBILE){filmLoadStarted=true;loadFilm();}
+
+let lastDrawn=-1;
+function drawFilm(f,opacity,zoom=1,ox=0,oy=0){
+  const cw=filmCanvas.width,ch=filmCanvas.height;
+  fx.clearRect(0,0,cw,ch);
+  fx.fillStyle='#f8f5ef';fx.fillRect(0,0,cw,ch);
+  fx.globalAlpha=opacity;
+  if(framesReady>0){
+    const idx=clamp(f,0,framesReady-1);
+    const i0=Math.floor(idx),i1=Math.min(i0+1,framesReady-1);
+    /* one continuous eased dissolve across every gap — with a dense sequence this
+       is stepless (no hold-then-snap flicker) and delta-free (no ghosting) */
+    const fr0=idx-i0,fr=fr0*fr0*(3-2*fr0);
+    const a=frames[i0];
+    const sA=Math.max(cw/a.width,ch/a.height)*zoom;
+    fx.drawImage(a,...fitCover(a.width,a.height,cw,ch,zoom,ox+alignX[i0]*sA,oy+alignY[i0]*sA));
+    if(fr>0.02&&i1!==i0){
+      fx.globalAlpha=opacity*fr;
+      const b=frames[i1];
+      const sB=Math.max(cw/b.width,ch/b.height)*zoom;
+      fx.drawImage(b,...fitCover(b.width,b.height,cw,ch,zoom,ox+alignX[i1]*sB,oy+alignY[i1]*sB));
+    }
+  }else{
+    /* stills fallback: the root early in the story, the fibre world at the hero */
+    const img=(f>N_FRAMES*0.6&&heroPoster)?heroPoster:poster;
+    if(img)fx.drawImage(img,...fitCover(img.width,img.height,cw,ch,zoom,ox,oy));
+  }
+  fx.globalAlpha=1;
 }
 
-/* ================= LOOP ================= */
-const clock = new THREE.Clock();
+/* ================= SCENE 4 — real-time layer (crystal + particles → the site) ================= */
+const canvas=document.getElementById('gl');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setClearColor(0x000000,0);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.0;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(40,1,0.05,80);
+camera.position.set(0,0.1,5.4);
+const pmrem=new THREE.PMREMGenerator(renderer);
+scene.environment=pmrem.fromScene(new RoomEnvironment(renderer),0.06).texture;
+
+const key=new THREE.SpotLight('#fff9ee',70,50,Math.PI/4.5,0.65,1.7);key.position.set(3,10,7);scene.add(key);
+const rim=new THREE.DirectionalLight('#e9e2d2',0.6);rim.position.set(-7,4,-5);scene.add(rim);
+scene.add(new THREE.AmbientLight('#efe9dc',0.9));
+
+function radialTex(stops,size=128){
+  const c=document.createElement('canvas');c.width=c.height=size;
+  const g=c.getContext('2d');const gr=g.createRadialGradient(size/2,size/2,0,size/2,size/2,size/2);
+  stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,size,size);
+  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t;
+}
+
+/* particle field — tiny luminous motes drifting inside the microscopic world;
+   they carry the atmosphere through into the living hero */
+const PN=1100;
+const pGeo=new THREE.BufferGeometry();
+const pPos=new Float32Array(PN*3);
+pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
+const pSeed=[];
+for(let i=0;i<PN;i++){
+  pSeed.push({
+    ox:(hash(i+3)*2-1)*4.6, oy:(hash(i+5)*2-1)*2.7, oz:(hash(i+7)*2-1)*1.6,
+    ph:hash(i+9)*Math.PI*2, sp:0.15+hash(i+31)*0.35, amp:0.08+hash(i+17)*0.22});
+}
+const pMat=new THREE.PointsMaterial({color:'#d9c9a6',size:0.03,transparent:true,opacity:0,
+  map:radialTex([[0,'rgba(255,255,255,1)'],[0.4,'rgba(255,255,255,0.5)'],[1,'rgba(255,255,255,0)']]),
+  depthWrite:false});
+const particles=new THREE.Points(pGeo,pMat);particles.frustumCulled=false;scene.add(particles);
+
+/* ================= scroll / session ================= */
+const spacer=document.getElementById('introSpace');
+const reduced=REDUCED,mobile=IS_MOBILE;
+let scrollP=0,smoothP=0;
+/* mobile & reduced-motion: the intro runway collapses — the hero IS the top of the page */
+if(mobile||reduced)spacer.style.height='0px';
+const introMax=()=>Math.max(1,spacer.offsetHeight);
+function readScroll(){scrollP=spacer.offsetHeight>2?clamp(scrollY/introMax(),0,1):1;}
+addEventListener('scroll',readScroll,{passive:true});
+
+document.getElementById('skip').onclick=()=>{
+  if(mobileIntro)holdQ=1;
+  else scrollTo({top:introMax(),behavior:'smooth'});
+};
+
+/* ---- hold to transform (mobile): press = time flows, release = it rests ---- */
+let holdQ=0,holding=false,heroDone=false;
+const holdBtn=document.getElementById('hold');
+if(mobileIntro){
+  holdBtn.style.display='flex';
+  holdBtn.addEventListener('pointerdown',e=>{
+    e.preventDefault();holding=true;holdBtn.classList.add('holding');
+    if(!filmLoadStarted){filmLoadStarted=true;loadFilm();}
+  });
+  const stop=()=>{holding=false;holdBtn.classList.remove('holding');};
+  addEventListener('pointerup',stop);
+  addEventListener('pointercancel',stop);
+  holdBtn.addEventListener('contextmenu',e=>e.preventDefault());
+}
+if(SEEN||reduced||mobile){
+  requestAnimationFrame(()=>{scrollTo({top:introMax(),behavior:'instant'});smoothP=1;readScroll();});
+}
+
+const mouseN=new THREE.Vector2(0,0);
+addEventListener('pointermove',e=>{mouseN.set(e.clientX/innerWidth*2-1,-(e.clientY/innerHeight)*2+1);});
+
+/* ================= PARTICLE TYPOGRAPHY — the headline assembles from the field ================= */
+const typeCanvas=document.getElementById('type');
+const tx=typeCanvas.getContext('2d');
+let glyphs=[],typeFade=SEEN?0:1;
+function sizeType(){typeCanvas.width=innerWidth;typeCanvas.height=innerHeight;}
+sizeType();
+function buildGlyphs(){
+  glyphs=[];
+  const h1=document.querySelector('#hero h1');
+  if(!h1)return;
+  const cs=getComputedStyle(h1);
+  const rect=h1.getBoundingClientRect();
+  const finalTop=rect.top+scrollY-introMax();        // viewport position once the hero has settled
+  const off=document.createElement('canvas');
+  off.width=innerWidth;off.height=innerHeight;
+  const og=off.getContext('2d');
+  og.font=`300 ${cs.fontSize}/${cs.lineHeight} ${cs.fontFamily}`;  // sample a heavier weight — the hairline 100 slips through the grid
+  og.textBaseline='top';
+  /* replicate the h1's own wrapping */
+  const words=h1.textContent.split(/\s+/),maxW=rect.width;
+  const lineH=parseFloat(cs.lineHeight)||parseFloat(cs.fontSize)*1.02;
+  let line='',y=finalTop,lines=[];
+  for(const w of words){
+    const test=line?line+' '+w:w;
+    if(og.measureText(test).width>maxW&&line){lines.push(line);line=w;}
+    else line=test;
+  }
+  if(line)lines.push(line);
+  lines.forEach((l,i)=>og.fillText(l,rect.left,finalTop+i*lineH));
+  const step=Math.max(3,Math.round(innerWidth/480));
+  const data=og.getImageData(0,0,off.width,off.height).data;
+  for(let yy=0;yy<off.height;yy+=step)
+    for(let xx=0;xx<off.width;xx+=step)
+      if(data[(yy*off.width+xx)*4+3]>128)
+        glyphs.push({tx:xx,ty:yy,
+          sx:innerWidth*0.72+(hash(xx*7+yy)*2-1)*innerWidth*0.22,
+          sy:innerHeight*0.45+(hash(xx+yy*13)*2-1)*innerHeight*0.34,
+          d:hash(xx*3+yy*11)*0.35});
+  if(glyphs.length>2600)glyphs=glyphs.filter((_,i)=>i%Math.ceil(glyphs.length/2600)===0);
+}
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>setTimeout(buildGlyphs,100));
+else setTimeout(buildGlyphs,1500);
+function drawType(typeT,t){
+  tx.clearRect(0,0,typeCanvas.width,typeCanvas.height);
+  if(typeFade<=0||glyphs.length===0)return;
+  tx.globalAlpha=typeFade;
+  tx.fillStyle='#1c1913';
+  for(const g of glyphs){
+    const e0=clamp((typeT*1.35-g.d)/1,0,1),e=e0*e0*(3-2*e0);
+    if(e<=0)continue;
+    const wob=(1-e)*10;
+    const x=g.sx+(g.tx-g.sx)*e+Math.sin(t*1.3+g.d*40)*wob;
+    const y=g.sy+(g.ty-g.sy)*e+Math.cos(t*1.1+g.d*47)*wob;
+    tx.globalAlpha=typeFade*(0.12+0.88*e);
+    tx.fillRect(x,y,1.7,1.7);
+  }
+  tx.globalAlpha=1;
+}
+
+/* ================= UI ================= */
+const whispers=[...document.querySelectorAll('.whisper')];
+const nav=document.getElementById('nav');
+const hero=document.getElementById('hero');
+const h1El=document.querySelector('#hero h1');
+const hint=document.getElementById('scrollHint');
+const skipBtn=document.getElementById('skip');
+let heroOn=false,booted=false,bootT=0;
+function uiUpdate(p){
+  whispers[0].classList.toggle('on',p>0.02&&p<0.18);
+  whispers[1].classList.toggle('on',p>0.28&&p<0.46);
+  whispers[2].classList.toggle('on',p>0.54&&p<0.70);
+  hint.classList.toggle('show',p<0.02&&booted&&!SEEN&&!mobile);
+  skipBtn.classList.toggle('show',p>0.01&&p<0.85&&!SEEN);
+  const on=p>0.88;
+  if(on!==heroOn){heroOn=on;nav.classList.toggle('show',on);hero.classList.toggle('on',on);}
+  if(p>0.97&&!SEEN)sessionStorage.setItem('sr_intro','1');
+}
+
+/* ================= MAIN LOOP ================= */
+const clock=new THREE.Clock();
+const camPos=new THREE.Vector3(),camLook=new THREE.Vector3(),curLook=new THREE.Vector3(0,0,0);
+const M=new THREE.Matrix4(),Q=new THREE.Quaternion(),S=new THREE.Vector3(),T=new THREE.Vector3();
+
 function resize(){
-  camera.aspect = innerWidth/innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth, innerHeight);
+  camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+  sizeFilm();sizeType();buildGlyphs();lastDrawn=-1;readScroll();
 }
-addEventListener('resize', resize); resize();
+addEventListener('resize',resize);resize();
 
 function animate(){
   requestAnimationFrame(animate);
-  const dt = Math.min(clock.getDelta(), 0.05);
-  const t = clock.elapsedTime;
-  if(!rendering) return;
+  const dt=(window.__fdt!==undefined)?window.__fdt:Math.min(clock.getDelta(),0.05);
+  window.__simT=(window.__simT||0)+dt;const t=window.__simT;
+  bootT+=dt;if(!booted&&bootT>0.2)booted=true;
+  smoothP+=(scrollP-smoothP)*Math.min(1,dt*4.2);
+  const p=smoothP;
 
-  /* breathing */
-  const breathe = 1 + Math.sin(t*0.9)*0.014;
-  coreGroup.scale.setScalar(breathe);
-  fibres.rotation.y += dt*0.10; fibres.rotation.x += dt*0.028;
-  fibres.children.forEach((k,i)=>{ k.rotation.z += dt*(0.02+i*0.012); });
-
-  /* slow orbit + node easing */
-  nodes.forEach(n=>{
-    if(activeCat===null){ n.theta += dt*0.05; n.baseTheta += dt*0.05; }
-    n.radiusScale += (n.targetRadiusScale-n.radiusScale)*Math.min(1,dt*2.2);
-    const hoverScale = (hovered===n||selected===n) ? 1.22 : 1;
-    n.scale += (n.targetScale*hoverScale-n.scale)*Math.min(1,dt*5);
-    n.dim += (n.targetDim-n.dim)*Math.min(1,dt*2.5);
-    placeNode(n, t);
-    n.group.scale.setScalar(n.scale*(1+Math.sin(t*1.1+n.bobOff)*0.012));
-    n.inner.rotation.y += dt*0.25; n.inner.rotation.x += dt*0.07;
-    n.glass.material.opacity = 0.35 + 0.65*n.dim;
-    n.glass.material.envMapIntensity = 0.5 + 0.9*n.dim + ((hovered===n||selected===n)?0.7:0);
-    updateRibbon(n);
-    n.ribbon.material.uniforms.uPulse.value = n.dim * ((hovered===n||selected===n)?1.9:1);
-  });
-  ribbonUniforms.forEach(u=>u.uTime.value = t);
-
-  /* idle drift + transition drift */
-  if(transitionT >= 0 && transitionT < 1){
-    transitionT += dt/6;
-    const e = 1-Math.pow(1-Math.min(transitionT,1),3);
-    camera.position.z = 8.9 - e*0.5;
-  } else if(!controls.enabled){
-    camera.position.x = Math.sin(t*0.05)*0.15;
-  }
-
-  /* hover raycast */
-  if(uiLive){
-    raycaster.setFromCamera(pointer, camera);
-    const hits = raycaster.intersectObjects(nodes.map(n=>n.glass), false);
-    const h = hits.length ? hits[0].object.userData.node : null;
-    if(h!==hovered){
-      hovered = h;
-      canvas.style.cursor = h ? 'pointer' : 'default';
-      if(h){ tip.textContent = h.ing.name; tip.style.opacity = 1; } else tip.style.opacity = 0;
+  /* mobile: the hold drives the film's time instead of scroll */
+  if(mobileIntro&&!heroDone){
+    if(holding&&framesReady>3)holdQ=Math.min(1,holdQ+dt/9);
+    holdBtn.style.setProperty('--prog',holdQ);
+    const lbl=holdBtn.querySelector('.l');
+    if(holding&&framesReady<=3)lbl.textContent='preparing…';
+    else if(lbl.textContent!=='Hold to transform')lbl.textContent='Hold to transform';
+    if(holdQ>0.985){
+      heroDone=true;sessionStorage.setItem('sr_intro','1');
+      holdBtn.style.opacity=0;setTimeout(()=>{holdBtn.style.display='none';},900);
     }
   }
+  const pEff=mobileIntro?(heroDone?1:holdQ):p;
 
-  controls.update();
-  renderer.render(scene, camera);
+  /* ---- one uninterrupted shot that simply becomes the website ----
+     the camera never stops: past the last frame it keeps breathing (zoom)
+     and answering the mouse (parallax) as the permanent living hero */
+  const heroT=seg(pEff,0.86,1.0);
+  const filmEnd=0.90;
+  const frameF=clamp(pEff/filmEnd,0,1)*(N_FRAMES-1);
+  const breathe=1.035+0.012*Math.sin(t*0.35)+0.05*heroT;
+  const parX=mouseN.x*16*heroT, parY=-mouseN.y*11*heroT;
+  drawFilm(frameF,1,breathe,parX,parY);
+  filmCanvas.style.display='block';
+
+  /* motes: the world's own atmosphere, alive from deep inside through the hero */
+  pMat.opacity=seg(pEff,0.52,0.72)*0.34;
+  particles.visible=pMat.opacity>0.01;
+  if(particles.visible){
+    for(let i=0;i<PN;i++){
+      const s2=pSeed[i];
+      pPos[i*3]  =s2.ox+Math.sin(t*s2.sp+s2.ph)*s2.amp;
+      pPos[i*3+1]=s2.oy+Math.cos(t*s2.sp*0.8+s2.ph)*s2.amp;
+      pPos[i*3+2]=s2.oz+Math.sin(t*s2.sp*0.6+s2.ph*2)*s2.amp*0.6;
+    }
+    pGeo.attributes.position.needsUpdate=true;
+  }
+
+  /* camera: settles into the hero composition; subtle mouse parallax throughout */
+  const par=0.05+heroT*0.15;
+  camPos.set(mouseN.x*par+Math.sin(t*0.3)*0.03,mouseN.y*par*0.6+Math.cos(t*0.26)*0.02,5.4-0.6*heroT);
+  camLook.set(0,0,0);
+  camera.position.lerp(camPos,Math.min(1,dt*4));
+  curLook.lerp(camLook,Math.min(1,dt*4));
+  camera.lookAt(curLook);
+
+  /* particle typography: the headline gathers out of the field, then hands to real type */
+  const typeT=seg(pEff,0.86,0.985);
+  if(pEff>0.985){typeFade=Math.max(0,typeFade-dt/0.9);}
+  else if(pEff<0.96&&!SEEN){typeFade=1;}
+  h1El.classList.toggle('ready',pEff>0.975);
+  if(!mobile&&!reduced&&typeT>0&&typeFade>0)drawType(typeT,t);
+  else tx.clearRect(0,0,typeCanvas.width,typeCanvas.height);
+
+  /* render only while the intro/hero canvas is on screen */
+  const past=clamp((scrollY-introMax())/(innerHeight*0.85),0,1);
+  document.getElementById('stage').style.opacity=1-past;
+  filmCanvas.style.opacity=1-past;
+  if(past<0.999&&particles.visible)renderer.render(scene,camera);
+  else if(past<0.999)renderer.clear();
+
+  uiUpdate(pEff);
 }
-animate();
 
-/* ================= BOOT ================= */
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-veil.style.opacity = 1;
-if(reduced){ enterLive(true); }
-else playFilm();
+readScroll();
+window.__ryu={seek(v){scrollP=clamp(v,0,1);},step(n,d){window.__fdt=d;for(let i=0;i<n;i++)animate();window.__fdt=undefined;},
+  get ready(){return framesReady;},get failed(){return filmFailed;}};
+animate();
+/* the veil lifts only when act one is ready — nobody ever sees the film half-born */
+const veil=document.getElementById('veil');
+function liftVeil(){
+  veil.style.opacity=0;
+  setTimeout(()=>{if(veil.parentNode)veil.remove();},1500);
+  setTimeout(()=>{if(!SEEN&&!mobile)hint.classList.add('show');},900);
+}
+if(SEEN||mobile||reduced){liftVeil();}
+else{
+  const gate=setInterval(()=>{
+    if(framesReady>=18||filmFailed){clearInterval(gate);liftVeil();}
+  },150);
+  setTimeout(()=>{clearInterval(gate);liftVeil();},12000);   // never trap the visitor
+}
+</script>
+
+<script type="module">
+/* ============ the site after the film — interactions only, the intro is untouched ============ */
+
+/* reveal on entry — everything arrives the way the headline did: softly, upward */
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);}
+}),{threshold:0.16});
+document.querySelectorAll('.rv').forEach((el,i)=>{
+  el.style.transitionDelay=(i%4)*0.08+'s';
+  io.observe(el);
+});
+
+/* nav — smooth travel through the publication */
+document.querySelectorAll('#navLinks a').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const el=document.querySelector(a.getAttribute('href'));
+    if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth'});}
+  });
+});
 </script>
 </body>
 </html>
